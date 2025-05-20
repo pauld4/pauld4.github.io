@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PaulD4 GitHubio</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="main_canvas"></canvas>
+    <script>
+		document.addEventListener("DOMContentLoaded", () => {
+            const canvas = document.getElementById("main_canvas");
+            const ctx = canvas.getContext("2d");
+
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+			var text_scale; // used to scale the button text size based on screen size
+			
+			const buttons = [
+				{ text: 'Login', color: '#333fc1', color_h: '#2c36a6', onClick: 1, hovered: false },
+				{ text: 'Lights', color: '#4e58c8', color_h: '#434ca9', onClick: 2, hovered: false },
+				{ text: 'Shop', color: '#171f7a', color_h: '#141a66', onClick: 3, hovered: false },
+			];
+			
+			function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+				text_scale = 64 * Math.min(1, canvas.width / 512);
+				let button_width_min = 0;
+				let button_width_max = canvas.width;
+				let button_height_min = canvas.height / buttons.length;
+				
+				if(canvas.height < canvas.width) { // if user is on a desktop computer (wide screen), use these formulas instead
+					button_width_min = canvas.width*0.2;
+					button_width_max = canvas.width*0.6;
+				}
+				
+				// readjust the button size when screen is changed
+				for(let i = 0; i < buttons.length; i++) {
+					buttons[i].x = button_width_min;
+					buttons[i].width = button_width_max;
+					buttons[i].y = i * button_height_min;
+					buttons[i].height = button_height_min;
+				}
+				
+				draw();
+            }
+
+			function draw() {
+				ctx.clearRect(0, 0, canvas.width, canvas.height);
+				// draw background color
+				ctx.fillStyle = '#bbc0ff';
+				ctx.fillRect(0, 0, canvas.width, canvas.height);
+				
+				// draw buttons
+				for(let button of buttons) {
+					ctx.beginPath();
+					ctx.fillStyle = button.hovered ? button.color_h : button.color;
+
+					ctx.fillRect(button.x, button.y, button.width, button.height);
+					ctx.closePath();
+
+					ctx.fillStyle = 'black';
+					ctx.font = `${text_scale}px Arial`;
+					ctx.textAlign = 'center';
+					ctx.textBaseline = 'middle';
+					ctx.fillText(button.text, button.x + button.width / 2, button.y + button.height / 2);
+				}
+			}
+
+			function mainLoop() {
+				draw();
+                requestAnimationFrame(mainLoop);
+			}
+
+			// prevent right click
+            canvas.addEventListener("contextmenu", function (e) {
+				e.preventDefault();
+			});
+			
+			canvas.addEventListener('click', function(e) {
+				// no click functionality yet
+			});
+			
+			canvas.addEventListener('mousemove', (e) => {
+				const rect = canvas.getBoundingClientRect();
+				const mouseX = e.clientX - rect.left;
+				const mouseY = e.clientY - rect.top;
+				
+				for(let button of buttons) {
+					if(mouseX >= button.x &&
+					mouseX <= button.x + button.width &&
+					mouseY >= button.y &&
+					mouseY <= button.y + button.height) {
+						button.hovered = true;
+					} else {
+						button.hovered = false;
+					}
+				}
+			});
+
+            window.addEventListener("resize", resizeCanvas);
+			
+			resizeCanvas();
+            mainLoop();
+        });
+    </script>
+</body>
+</html>

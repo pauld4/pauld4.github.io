@@ -1,0 +1,161 @@
+<!--
+	JavaScript database system using a login, new account page, recover account page, and view my account page. Try logging in with using 'admin' as username and 'password1' as password. Try it on my github.io, https://pauld4.github.io/
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login - PaulD4</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+			margin: 0;
+			background: #bbc0ff;
+			display: flex;
+			min-height: 100vh;
+        }
+		
+		.screen {
+			background: #333fc1;
+			width: 400px;
+			margin: auto;
+			padding: 20px;
+			box-shadow: 0 0 10px rgba(0,0,0,0.5);
+			
+			text-align: center;
+        }
+		
+		h2 {
+			text-align: center;
+			color: white;
+		}
+		
+		@media only screen and (max-width: 620px) {
+			.screen {
+				width: 100%;
+				margin: auto;
+			}
+			
+			body {
+				padding: 8px;
+			}
+		}
+		
+		input {
+			width: 200px;
+			height: 32px;
+			display: block;
+			margin: 0 auto;
+			margin-bottom: .5rem;
+		}
+		
+		button {
+			width: 200px;
+			height: 32px;
+			display: block;
+			margin: 0 auto;
+			margin-bottom: 1rem;
+		}
+		
+		a {
+			width: 200px;
+			height: 32px;
+			display: block;
+			margin: 0 auto;
+			margin-bottom: .5rem;
+			color: white;
+			font-size: 1.25rem;
+			font-weight: bold;
+		}
+		
+		p {
+			color: white;
+			font-size: 1.25rem;
+		}
+    </style>
+	
+	<script>
+		// add login check and redirect if already logged in
+	</script>
+</head>
+<body>
+	<div class="screen">
+		<h2>User Login</h2>
+		<input type="text" id="user_name" placeholder="Username" maxlength="8">
+		<input type="password" id="user_pass" placeholder="Password" maxlength="24">
+		<button onClick="buttonLogin()">Submit</button>
+		<p id="error_message"><br></p>
+		<a>Create Account</a>
+		<a>Forgot Password?</a>
+		<a href="index.html">Exit</a>
+	</div>
+	
+	<script>
+		function createAccount(username, password) {
+			const accounts = JSON.parse(localStorage.getItem('accounts')) || {};
+
+			if (accounts[username]) {
+				return { success: false, message: 'Username already exists' };
+			}
+
+			accounts[username] = { name: username, pass: password };
+			localStorage.setItem('accounts', JSON.stringify(accounts));
+
+			return { success: true, message: 'Account created' };
+		}
+
+		function buttonLogin() {
+			let user_name = document.getElementById("user_name").value;
+			let user_pass = document.getElementById("user_pass").value;
+			let error_field = document.getElementById("error_message");
+
+			if(user_name.length > 2 && user_pass.length > 5) {
+				user_name = user_name.toLowerCase(); // username is not case sensitive, so convert for flexibility
+				// success login, check length
+				if (localStorage.getItem('accounts') !== null) {
+					let accounts = JSON.parse(localStorage.getItem('accounts')); // without json.parse, a string of the accounts object is returned. jsonparse returns an object
+					
+					if(accounts[user_name]) {
+						let u = accounts[user_name];
+						
+						if(user_pass == u['pass']) {
+							localStorage.setItem('user_login', u['name']);
+							error_field.textContent = "Success login";
+						} else {
+							error_field.textContent = "Invalid username or password";
+						}
+					} else {
+						error_field.textContent = "Invalid username or password";
+					}
+				} else {
+					error_field.textContent = "Invalid username or password";
+				}
+			} else {
+				error_field.textContent = "Invalid username or password";
+			}
+		}
+		
+		// create admin account for user if none exists. only executes when user first visits the page
+		<!-- if (localStorage.getItem('admin') === null) { -->
+			<!-- localStorage.setItem('admin', JSON.stringify({ name: 'admin', pass: 'password1' })); -->
+		<!-- } -->
+		
+		if(localStorage.getItem('accounts') === null) {
+			let accounts = {};
+			accounts['admin'] = {name: 'admin', pass: 'password1'};
+			localStorage.setItem('accounts', JSON.stringify(accounts));
+		}
+		
+		// clear error message when user types in a new username or password
+		document.getElementById("user_name").addEventListener('input', () => {
+			document.getElementById("error_message").innerHTML = '<br>'; // Clear the error message
+		});
+		
+		document.getElementById("user_pass").addEventListener('input', () => {
+			document.getElementById("error_message").innerHTML = '<br>'; // Clear the error message
+		});
+	</script>
+</body>
+</html>

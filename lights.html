@@ -1,0 +1,275 @@
+<!--
+	JavaScript code that displays a grid of squares that when clicked on, toggle the color of the square that was clicked along with the adjacent squares. The objective is to get all the squares to be the same color with the minimum amount of clicks. Try it on my github.io, https://pauld4.github.io/
+	
+	Todo:
+	move button locations based on device screen size (move buttons below grid for mobile)
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lights - PaulD4</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="main_canvas"></canvas>
+    <script>
+		// Define classes
+		class light {
+			constructor(id,x,y) {
+				this.id = id;
+				this.status = 0;
+				this.posx = x;
+				this.posy = y;
+				this.size = 64;
+			}
+			
+			setPos(x,y) { this.posx = x; this.posy = y; }
+			toggle() { this.status ? this.status = 0 : this.status = 1; }
+		}
+		
+		class grid {
+			constructor(l,w) {
+				this.size = 4;
+				this.posx = l;
+				this.posy = w;
+				this.clicks = 0;
+				this.min_clicks = 3;
+				
+				this.lights = [];
+				this.start_list = [];
+				this.tick_list = [];
+				
+				for(let row = 0; row < this.size; row++) {
+					this.lights.push([]);
+				}
+			}
+			
+			addLight(x,y,l) { this.lights[x][y] = l; }
+			getLight(x,y) { return this.lights[x][y]; }
+			toggleLight(x,y) {
+				this.lights[x][y].toggle();
+				if(x-1 >= 0) this.lights[x-1][y].toggle();
+				if(y-1 >= 0) this.lights[x][y-1].toggle();
+				if(x+1 < this.size) this.lights[x+1][y].toggle();
+				if(y+1 < this.size) this.lights[x][y+1].toggle();
+			}
+			
+			toggleTick(x,y) { this.tick_list[x][y] ? this.tick_list[x][y] = 0 : this.tick_list[x][y] = 1; }
+		}
+		
+		// Load content
+        document.addEventListener("DOMContentLoaded", () => {
+            const canvas = document.getElementById("main_canvas");
+            const ctx = canvas.getContext("2d");
+
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+			const g = new grid;
+			const totalDim = g.size * 64 + ((g.size-1) * 4);
+			g.posx = (canvas.width / 2) - (totalDim / 2);
+			g.posy = (canvas.height / 2) - (totalDim / 2);
+			var id = 0;
+			for(let row = 0; row < g.size; row++) {
+				for(let col = 0; col < g.size; col++) {
+					l_posx = (col * 64) + (col * 4);
+					l_posy = (row * 64) + (row * 4);
+					g.addLight(col,row,new light(id,l_posx,l_posy));
+					id++;
+				}
+			}
+			
+			const buttons = [
+				{ x: 32, y: 32, width: 200, height: 48, text: 'Reset Grid', hovered: false },
+				{ x: 32, y: 88, width: 200, height: 48, text: 'New Grid', hovered: false },
+				{ x: 32, y: 144, width: 200, height: 48, text: 'Exit', hovered: false }
+			];
+			
+			// Create a new combination of lights, executed when New Grid is clicked
+			function newLights() {
+				if(g.start_list.length > 0) {
+					for(let i of g.start_list) {
+						g.toggleLight(i.x,i.y);
+					}
+					
+					if(g.tick_list.length > 0) {
+						for(let i of g.tick_list) {
+							g.toggleLight(i.x,i.y);
+						}
+					}
+				}
+				
+				let num = 0;
+				g.clicks = 0;
+				g.start_list = [];
+				g.tick_list = [];
+				while(num < g.min_clicks) {
+					let randx = Math.floor(Math.random() * g.size);
+					let randy = Math.floor(Math.random() * g.size);
+					let o = {x: randx, y: randy};
+					let is_added = false;
+					
+					if(g.start_list.length > 0) {
+						for(let i of g.start_list) {
+							if(!is_added) {
+								if(i.x == o.x && i.y == o.y) {
+									is_added = true;
+								}
+							}
+						}
+					}
+					
+					if(!is_added) {
+						g.toggleLight(o.x,o.y);
+						g.start_list.push(o);
+						num++;
+					}
+				}
+			}
+			
+			// Reset lights in the same puzzle, executed when Reset Lights button is clicked
+			function resetLights() {
+				if(g.tick_list.length > 0) {
+					for(let i of g.tick_list) {
+						g.toggleLight(i.x,i.y);
+					}
+					g.clicks = 0;
+					g.tick_list = [];
+				}
+			}
+			
+			// Repositions the lights to fit the center of the screen
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+				g.posx = (canvas.width / 2) - (totalDim / 2);
+				g.posy = (canvas.height / 2) - (totalDim / 2);
+                draw();
+            }
+			
+			// Draw the images on the screen
+            function draw() {
+				ctx.clearRect(0, 0, canvas.width, canvas.height);
+				ctx.fillStyle = '#bbc0ff';
+				ctx.fillRect(0, 0, canvas.width, canvas.height);
+				
+				for(let row = 0; row < g.size; row++) {
+					for(let col = 0; col < g.size; col++) {
+						let l = g.getLight(col,row);
+						let relx = g.posx + l.posx;
+						let rely = g.posy + l.posy;
+						l.status ? ctx.fillStyle = 'white' : ctx.fillStyle = 'blue';
+						ctx.fillRect(relx, rely, 64, 64);
+					}
+				}
+				
+				for(let button of buttons) {
+					ctx.beginPath();
+					ctx.fillStyle = button.hovered ? '#ccc' : '#fff';
+
+					ctx.fillRect(button.x, button.y, button.width, button.height);
+					ctx.closePath();
+
+					ctx.fillStyle = 'black';
+					ctx.font = '20px Arial';
+					ctx.textAlign = 'center';
+					ctx.textBaseline = 'middle';
+					ctx.fillText(button.text, button.x + button.width / 2, button.y + button.height / 2);
+				}
+			}
+			
+			// Main loop that is iterated
+            function mainLoop() {
+				draw();
+                requestAnimationFrame(mainLoop);
+            }
+			
+			// Prevent user right clicking to bring up the menu
+            canvas.addEventListener("contextmenu", function (e) {
+				e.preventDefault();
+			});
+			
+			// Detect when mouse moves and when buttons should light up
+			canvas.addEventListener('mousemove', (e) => {
+				const rect = canvas.getBoundingClientRect();
+				const mouseX = e.clientX - rect.left;
+				const mouseY = e.clientY - rect.top;
+				
+				for(let button of buttons) {
+					if(mouseX >= button.x &&
+					mouseX <= button.x + button.width &&
+					mouseY >= button.y &&
+					mouseY <= button.y + button.height) {
+						button.hovered = true;
+					} else {
+						button.hovered = false;
+					}
+				}
+
+				draw();
+			});
+			
+			// Check when mouse is clicked to see if a light or a button was clicked
+			canvas.addEventListener('click', function(event) {
+				const rect = canvas.getBoundingClientRect();
+				const x = event.clientX - rect.left;
+				const y = event.clientY - rect.top;
+				
+				const totalDim = (g.size * 64) + ((g.size-1) * 4); // width and length of grid
+				let relx = (canvas.width / 2) - (totalDim / 2);
+				let rely = (canvas.height / 2) - (totalDim / 2);
+				let endx = relx + (64 * g.size) + (4 * (g.size-1));
+				let endy = rely + (64 * g.size) + (4 * (g.size-1));
+				
+				if(x >= relx && x <= endx && y >= rely && y <= endy) {
+					let arrx = Math.floor((x - relx) / 68);
+					let arry = Math.floor((y - rely) / 68);
+					let o = {x: arrx, y: arry};
+					g.toggleLight(arrx,arry);
+					
+					// Loop through clicked lights list to check if it has been clicked, then remove or add
+					// This is done to track which lights have been clicked without infinitely adding to an array
+					// The tick_list attribute is used when reset lights function is executed in order to reset the lights
+					let index = -1;
+					for(let i = 0; i < g.tick_list.length; i++) {
+						if(index == -1) {
+							if(g.tick_list[i].x == o.x && g.tick_list[i].y == o.y) {
+								index = i;
+							}
+						}
+					}
+					if (index > -1) { // Check if element exists in the list of clicked lights
+						g.tick_list.splice(index, 1); // Remove 1 element at the index
+					} else {
+						g.tick_list.push(o); // If element doesn't exist, add to list of clicked tiles
+					}
+					g.clicks++;
+				}
+				
+				if(buttons[0].hovered) {
+					resetLights();
+				} else if(buttons[1].hovered) {
+					newLights();
+				} else if(buttons[2].hovered) {
+					window.location.href = "index.html";
+				}
+			});
+			
+			// Check for if screen is resized
+            window.addEventListener("resize", resizeCanvas);
+			
+			// Start application
+			newLights();
+            mainLoop();
+        });
+    </script>
+</body>
+</html>

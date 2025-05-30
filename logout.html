@@ -1,0 +1,17 @@
+<!--
+	Logout page for my JavaScript account system. Try it on my GitHub, https://pauld4.github.io/
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>
+		// log user out by clearing the current login and redirecting to the login page
+		if (localStorage.getItem('user_login') !== null) {
+			localStorage.setItem('user_login', "");
+		}
+		
+		window.location.href = "login.html";
+	</script>
+</head>
+</html>

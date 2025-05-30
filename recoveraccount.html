@@ -1,0 +1,154 @@
+<!--
+	JavaScript database system using a login, new account page, recover account page, and view my account page. Try logging in with using 'admin' as username and 'password1' as password. Try it on my github.io, https://pauld4.github.io/
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>Recover Account - PaulD4</title>
+	<style>
+        body {
+            font-family: Times New Roman, Arial, sans-serif;
+			margin: 0;
+			background: #bbc0ff;
+			display: flex;
+			min-height: 100vh;
+        }
+		
+		.screen {
+			background: #eef4ff;
+			width: 400px;
+			margin: auto;
+			padding: 20px;
+			box-shadow: 0 0 10px rgba(0,0,0,0.5);
+			text-align: center;
+        }
+		
+		h2 {
+			text-align: center;
+		}
+		
+		@media only screen and (max-width: 620px) {
+			.screen {
+				width: 100%;
+				margin: auto;
+			}
+			
+			body {
+				padding: 8px;
+			}
+		}
+		
+		input {
+			width: 200px;
+			height: 32px;
+			display: block;
+			margin: 0 auto;
+			margin-bottom: .5rem;
+		}
+		
+		button {
+			width: 200px;
+			height: 32px;
+			display: block;
+			margin: 0 auto;
+			margin-bottom: 1rem;
+		}
+		
+		.table-container {
+			margin: 0 auto;
+			text-align: center;
+		}
+		
+		table {
+			width: 300px;
+			font-size: 1.25rem;
+			margin: 0 auto;
+			margin-bottom: 1rem;
+		}
+		
+		tr, td {
+			width: 50%;
+		}
+		
+		.link-container {
+			text-align: center;
+			margin-bottom: 1rem;
+		}
+		
+		.link-container a {
+			margin: 0 auto;
+			color: black;
+			font-size: 1.25rem;
+			font-weight: bold;
+		}
+		
+		.link-container a:hover {
+			color: #bbc0ff;
+		}
+		
+		p {
+			font-size: 1.25rem;
+		}
+    </style>
+	
+	<script>
+		// add login check and redirect if already logged in
+		if (localStorage.getItem('user_login') !== null && localStorage.getItem('user_login') != "") {
+			let accounts = JSON.parse(localStorage.getItem('accounts'));
+			let current_login = localStorage.getItem('user_login');
+			
+			// user is already logged into an account, redirect to account page
+			if (accounts[current_login]) {
+				window.location.href = "account.html";
+			} else { // user is logged in with an invalid username, clear the localstorage and redirect to login page to try again
+				localStorage.setItem('user_login', "");
+				window.location.href = "login.html";
+			}
+		}
+	</script>
+</head>
+<body>
+	<div class="screen">
+		<h2>Recover Account</h2>
+		<div class="table-container">
+			<table id="user_list">
+				<tr><th>Login</th><th>Password</th></tr>
+			</table>
+			<div class="link-container">
+				<a href="login.html">Log In</a>
+			</div>
+			<div class="link-container">
+				<a href="newaccount.html">Create Account</a>
+			</div>
+			<div class="link-container">
+				<a href="index.html">Exit</a>
+			</div>
+		</div>
+	</div>
+	
+	<script>
+		var accounts = JSON.parse(localStorage.getItem('accounts'));
+		var table_element = document.getElementById("user_list");
+		var tr_element = null;
+		var td_element = null;
+		
+		for(let a in accounts) {
+			tr_element = document.createElement("tr");
+			
+			td_element = document.createElement("td");
+			td_element.textContent = accounts[a]['name'];
+			tr_element.appendChild(td_element);
+			
+			td_element = document.createElement("td");
+			td_element.textContent = accounts[a]['pass'];
+			tr_element.appendChild(td_element);
+			
+			table_element.appendChild(tr_element);
+		}
+	</script>
+</body>
+</html>

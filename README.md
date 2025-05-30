@@ -11,5 +11,5 @@ A JavaScript login page, storing usernames and passwords in the user's client wi
 Lights.html
 A JavaScript game using the HTML canvas and continually draws a new image to the screen and responds to input using a game loop. Try to make all the squares blue within 3 clicks. It is possible to make all the squares white, but will require more clicks.
 
-Shop.html
-Work in progress, but will be another JavaScript game that requires the user to click on items on a store shelf based on what item is shown on their shopping list.
+Insurance.html
+A sample Health Insurance form to fill out.

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	
+    <title>Insurance Form - PaulD4</title>
+    <style>
+		body {
+			font-family: Times New Roman, Arial, sans-serif;
+			background: #bbc0ff;
+			margin: 0;
+			padding: 20px;
+		}
+		
+        .main_form {
+			background: #eef4ff;
+			max-width: 50%;
+			margin: auto;
+			padding: 30px;
+			box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+		
+		.i_label {
+			display: block;
+			margin-top: 15px;
+			font-weight: bold;
+			font-size: 1.25rem;
+		}
+		
+		.r_label {
+			margin-bottom: 15px;
+		}
+		
+		input[type=text],
+		input[type=tel],
+		input[type=date],
+		input[type=email] {
+			width: 100%;
+			padding: 10px;
+			margin-top: 5px;
+			border: 1px solid #ccc;
+			box-sizing: border-box;
+		}
+		
+		@media only screen and (max-width: 620px) {
+			.main_form {
+				max-width: 100%;
+				touch-action: manipulation;
+			}
+		}
+		
+		h2 {
+			text-align: center;
+		}
+		
+		textarea {
+			width: 100%;
+		}
+		
+		button {
+			width: 200px;
+			height: 32px;
+			display: block;
+			margin: 0 auto;
+			margin-top: 1rem;
+			margin-bottom: 1rem;
+		}
+		
+		#error_message {
+			width: 100%;
+			text-align: center;
+			font-style: italic;
+		}
+		
+		a {
+			font-size: 1.25rem;
+			color: black;
+		}
+    </style>
+</head>
+
+<body>
+	<div class="main_form">
+		<h2>Contact Form - Health Insurance</h2>
+		<label for="fullName" class="i_label">Full Name*</label>
+		<input type="text" id="firstName" class="name_input" placeholder="first name*">
+		<input type="text" id="midName" class="name_input" placeholder="middle name (optional)">
+		<input type="text" id="lastName" class="name_input" placeholder="last name*">
+
+		<label for="dob" class="i_label">Date of Birth*</label>
+		<input type="date" id="dob">
+
+		<label for="phone" class="i_label">Phone</label>
+		<input type="tel" id="phone" placeholder="phone (optional)">
+
+		<label for="email" class="i_label">Email*</label>
+		<input type="email" id="email" placeholder="email">
+
+		<label for="address" class="i_label">Address*</label>
+		<input type="text" id="address" placeholder="street address">
+
+		<label for="address2" class="i_label">Address Line 2</label>
+		<input type="text" id="address2" placeholder="line 2 address (optional)">
+
+		<label for="city" class="i_label">City*</label>
+		<input type="text" id="city" placeholder="city">
+
+		<label for="state" class="i_label">State*</label>
+		<input type="text" id="state" placeholder="state">
+
+		<label for="zip" class="i_label">Zip Code*</label>
+		<input type="text" id="zip" placeholder="zip">
+		
+		<p class="i_label">When do you plan on retiring?*</p>
+		<input type="radio" id="plan1" class="r_label" name="plan" value="plan1">
+		<label for="plan1">Within a year</label><br>
+		<input type="radio" id="plan2" class="r_label" name="plan" value="plan2">
+		<label for="plan2">1-2 years</label><br>
+		<input type="radio" id="plan3" class="r_label" name="plan" value="plan3">
+		<label for="plan3">3-5 years</label><br>
+		<input type="radio" id="plan4" class="r_label" name="plan" value="plan4">
+		<label for="plan4">More than 5 years</label><br>
+		<input type="radio" id="plan5" class="r_label" name="plan" value="plan5">
+		<label for="plan5">Not sure</label><br>
+		
+		<p class="i_label">Current health insurance*</p>
+		<input type="radio" id="currins1" class="r_label" name="currins" value="currins1">
+		<label for="currins1">Medicare</label><br>
+		<input type="radio" id="currins2" class="r_label" name="currins" value="currins2">
+		<label for="currins2">Employer Health Plan</label><br>
+		<input type="radio" id="currins3" class="r_label" name="currins" value="currins3">
+		<label for="currins3">Individual Health Plan</label><br>
+		<input type="radio" id="currins4" class="r_label" name="currins" value="currins4">
+		<label for="currins4">None</label><br>
+		
+		<p class="i_label">Best Days to Call</p>
+		<input type="checkbox" id="day1" class="r_label" name="day" value="monday">
+		<label for="day1">Monday</label><br>
+		<input type="checkbox" id="day2" class="r_label" name="day" value="tuesday">
+		<label for="day2">Tuesday</label><br>
+		<input type="checkbox" id="day3" class="r_label" name="day" value="wednesday">
+		<label for="day3">Wednesday</label><br>
+		<input type="checkbox" id="day4" class="r_label" name="day" value="thursday">
+		<label for="day4">Thursday</label><br>
+		<input type="checkbox" id="day5" class="r_label" name="day" value="friday">
+		<label for="day5">Friday</label><br><br>
+		
+		<label for="zip" class="i_label">Additional Comments</label>
+		<textarea rows="4" cols="50" id="commentform"></textarea>
+		
+		<p id="error_message"><br></p>
+		<button onClick="buttonSubmit()">Submit</button>
+		<a href="index.html">Exit</a>
+	</div>
+	
+	<script>
+		function properName(name) {
+			return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+		}
+		
+		function isValidEmail(email) {
+			return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+		}
+		
+		function isValidPhoneNumber(input) {
+			return /^\d{10}$/.test(input);
+		}
+		
+		function isValidAddress(addr) {
+			return /^[a-zA-Z0-9\s]+$/.test(addr);
+		}
+
+		function buttonSubmit() {
+			var first_name = document.getElementById("firstName").value;
+			var middle_name = document.getElementById("midName").value;
+			var last_name = document.getElementById("lastName").value;
+			const dob = document.getElementById("dob").value;
+			const phone = document.getElementById("phone").value;
+			const email = document.getElementById("email").value;
+			const address = document.getElementById("address").value;
+			const address2 = document.getElementById("address2").value;
+			const city = document.getElementById("city").value;
+			const state = document.getElementById("state").value;
+			const zip = document.getElementById("zip").value;
+			
+			const plan = document.getElementsByName("plan");
+			const currins = document.getElementsByName("currins");
+			const day = document.getElementsByName("day");
+			
+			const comments = document.getElementById("commentform").value;
+			
+			let error_field = document.getElementById("error_message");
+			
+			if(first_name.length === 0) {
+				error_field.textContent = "Please enter your first name";
+			} else if(!first_name.match(/^[A-Za-z]+$/)) {
+				error_field.textContent = "Please enter a valid first name";
+			} else if(last_name.length === 0) {
+				error_field.textContent = "Please enter your last name";
+			} else if(!last_name.match(/^[A-Za-z]+$/)) {
+				error_field.textContent = "Please enter a valid last name";
+			} else if(middle_name.length > 0 && !middle_name.match(/^[A-Za-z]+$/)) {
+				error_field.textContent = "Please enter a valid middle name";
+			} else if(dob.length == 0) {
+				error_field.textContent = "Please enter a date of birth";
+			} else if(!isValidPhoneNumber(phone)) {
+				error_field.textContent = "Please enter a valid phone number";
+			} else if(!isValidEmail(email)) {
+				error_field.textContent = "Please enter a valid email";
+			} else if(address.length == 0 || !isValidAddress(address)) {
+				error_field.textContent = "Please enter a valid address";
+			} else if(address2.length > 0 && !isValidAddress(address2)) {
+				error_field.textContent = "Please enter a valid second line address";
+			} else if(city.length == 0) {
+				error_field.textContent = "Please enter the city you live in";
+			} else if(state.length == 0) {
+				error_field.textContent = "Please enter the state you live in";
+			} else if(zip.length == 0) {
+				error_field.textContent = "Please enter your zip code";
+			} else {
+				let plan_checked = false;
+				
+				for (const radio of plan) {
+					if (radio.checked) {
+						plan_checked = true;
+						break;
+					}
+				}
+				
+				let curr_checked = false;
+				
+				for (const radio of currins) {
+					if (radio.checked) {
+						curr_checked = true;
+						break;
+					}
+				}
+				
+				let days_checked = [];
+				
+				for (const radio of day) {
+					if (radio.checked) {
+						days_checked.push(radio.value);
+					}
+				}
+				
+				if(!plan_checked) {
+					error_field.textContent = "Please select when you plan to retire";
+				} else if(!curr_checked) {
+					error_field.textContent = "Please select your current health insurance status";
+				} else if(days_checked.length == 0) {
+					error_field.textContent = "Please select at least 1 day that you are available";
+				} else {
+					first_name = properName(first_name);
+					last_name = properName(last_name);
+					
+					let full_name = first_name;
+					if(middle_name.length > 0) {
+						middle_name = properName(middle_name);
+						full_name += " " + middle_name;
+					}
+					full_name += " " + last_name;
+					error_field.textContent = "Thank you, " + full_name;
+					
+					if(comments.length > 0) {
+						// submit comment section
+					}
+				}
+			}
+		}
+	</script>
+</body>
+</html>

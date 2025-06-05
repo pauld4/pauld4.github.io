@@ -11,5 +11,5 @@ A JavaScript login page, storing usernames and passwords in the user's client wi
 Lights.html
 A JavaScript game using the HTML canvas and continually draws a new image to the screen and responds to input using a game loop. Try to make all the squares blue within 3 clicks. It is possible to make all the squares white, but will require more clicks.
 
-[Insmenu.html, insform.html, insdb.html, insthank.html] :
-A sample Health Insurance form to fill out.
+(Insmenu.html, Insform.html, Insdb.html, Insthank.html) :
+Sample health insurance files where users can input data using insform.html and view the current "user" information using insdb.html. After submitting a form, the user is sent to insthank.html showing a "thank you" message and a link back to the main menu, insmenu.html. Future improvements include checking to ensure the date of birth entered is valid (incorrect dates such as February 30th), and that cities, states, and zip codes match (incorrect locations such as New York City, MA 12345). 

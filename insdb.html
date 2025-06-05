@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	
+    <title>Insurance Entries - PaulD4</title>
+	
+	<style>
+		body {
+			font-family: Times New Roman, Arial, sans-serif;
+			background: #bbc0ff;
+			margin: 0;
+			padding: 20px;
+		}
+		
+		.main_form {
+			background: #eef4ff;
+			box-shadow: 0 0 10px rgba(0,0,0,0.1);
+			padding: 20px;
+		}
+		
+        .table_form {
+			overflow-x: auto;
+			width: 100%;
+			height: 70vh;
+			scrollbar-width: auto;
+			scrollbar-color: #888 #eee;
+		}
+		
+		.table_form::-webkit-scrollbar {
+			height: 12px;
+		}
+
+		.table_form table {
+			border-collapse: collapse;
+		}
+		
+		h2 {
+			text-align: center;
+		}
+
+		td {
+			border: 1px solid black;
+			padding: 8px;
+			white-space: nowrap;
+		}
+		
+		th {
+			position: sticky;
+			top: 0;
+			padding: 8px;
+			white-space: nowrap;
+			background: #eef4ff;
+			z-index: 2; /* makes sure headers are above other content */
+		}
+		
+		.link-container {
+			text-align: center;
+			margin-bottom: 1rem;
+			float: right;
+		}
+		
+		.link-container a {
+			margin: 0 auto;
+			color: black;
+			font-size: 1.25rem;
+			font-weight: bold;
+		}
+		
+		.link-container a:hover {
+			color: #bbc0ff;
+		}
+	</style>
+	
+    <script src="js/insdata.js"></script>
+</head>
+
+<body>
+	<div class="main_form">
+		<h2>Health Insurance Forms</h2>
+		<div class="link-container">
+			<a href="insmenu.html">Exit</a>
+		</div>
+		<div class="table_form">
+			<table class="table_user" id="user_list">
+				<tr><th>Name</th><th>Birth Date</th><th>Phone</th><th>Email</th><th>Address</th><th>Address 2</th><th>City</th><th>State</th><th>Zip</th><th>Married?</th><th>Spouse Name </th><th>Spouse DOB</th><th>Retiring In</th><th>Current Insurance</th><th>Availability</th><th>Comments</th></tr>
+			</table>
+		</div>
+	</div>
+	
+	<script>
+		let ins1 = JSON.parse(localStorage.getItem('insurance'));
+		var table_element = document.getElementById("user_list");
+		var tr_element = null;
+		var td_element = null;
+		
+		for(let i of ins1) {
+			let p = new db_person(i);
+			tr_element = document.createElement("tr");
+			
+			td_element = document.createElement("td");
+			td_element.textContent = p.getName();
+			tr_element.appendChild(td_element);
+			
+			td_element = document.createElement("td");
+			td_element.textContent = getBirthStr(p.dob);
+			tr_element.appendChild(td_element);
+			
+			td_element = document.createElement("td");
+			td_element.textContent = p.getPhoneStr();
+			tr_element.appendChild(td_element);
+			
+			td_element = document.createElement("td");
+			td_element.textContent = p.email;
+			tr_element.appendChild(td_element);
+			
+			td_element = document.createElement("td");
+			td_element.textContent = p.address;
+			tr_element.appendChild(td_element);
+			
+			td_element = document.createElement("td");
+			td_element.textContent = p.address2;
+			tr_element.appendChild(td_element);
+			
+			td_element = document.createElement("td");
+			td_element.textContent = p.city;
+			tr_element.appendChild(td_element);
+			
+			td_element = document.createElement("td");
+			td_element.textContent = p.state;
+			tr_element.appendChild(td_element);
+			
+			td_element = document.createElement("td");
+			td_element.textContent = p.zip;
+			tr_element.appendChild(td_element);
+			
+			td_element = document.createElement("td");
+			td_element.textContent = (p.is_married) ? "Yes" : "No";
+			tr_element.appendChild(td_element);
+			
+			td_element = document.createElement("td");
+			if(p.is_married) {
+				td_element.textContent = p.getSpouseName();
+			}
+			tr_element.appendChild(td_element);
+			
+			td_element = document.createElement("td");
+			if(p.is_married) {
+				td_element.textContent = getBirthStr(p.spouse_dob);
+			}
+			tr_element.appendChild(td_element);
+			
+			td_element = document.createElement("td");
+			td_element.textContent = lib_plans[p.plan];
+			tr_element.appendChild(td_element);
+			
+			td_element = document.createElement("td");
+			td_element.textContent = lib_currins[p.currins];
+			tr_element.appendChild(td_element);
+			
+			td_element = document.createElement("td");
+			td_element.textContent = "";
+			let count = 0;
+			for(let j = 0; j < lib_days.length; j++) {
+				if(p.available[j]) {
+					if(count > 0) {
+						td_element.textContent += ", ";
+					}
+					td_element.textContent += lib_days[j];
+					count++;
+				}
+			}
+			tr_element.appendChild(td_element);
+			
+			td_element = document.createElement("td");
+			td_element.textContent = p.comments;
+			tr_element.appendChild(td_element);
+			
+			table_element.appendChild(tr_element);
+		}
+	</script>
+</body>
+</html>

@@ -1,0 +1,436 @@
+<!--
+	https://pauld4.github.io/
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	
+    <title>Insurance Form - PaulD4</title>
+    <style>
+		body {
+			font-family: Times New Roman, Arial, sans-serif;
+			background: #bbc0ff;
+			margin: 0;
+			padding: 20px;
+		}
+		
+        .main_form {
+			background: #eef4ff;
+			max-width: 50%;
+			margin: auto;
+			padding: 30px;
+			box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+		
+		.i_label {
+			display: block;
+			margin-top: 15px;
+			font-weight: bold;
+			font-size: 1.25rem;
+		}
+		
+		.r_label {
+			margin-bottom: 15px;
+		}
+		
+		input[type=text],
+		input[type=tel],
+		input[type=date],
+		input[type=email] {
+			width: 100%;
+			padding: 10px;
+			margin-top: 5px;
+			border: 1px solid #ccc;
+			box-sizing: border-box;
+		}
+		
+		@media only screen and (max-width: 620px) {
+			.main_form {
+				max-width: 100%;
+				touch-action: manipulation;
+			}
+		}
+		
+		h2 {
+			text-align: center;
+		}
+		
+		textarea {
+			width: 100%;
+		}
+		
+		button {
+			width: 200px;
+			height: 32px;
+			display: block;
+			margin: 0 auto;
+			margin-top: 1rem;
+			margin-bottom: 1rem;
+		}
+		
+		#error_message {
+			width: 100%;
+			text-align: center;
+			font-style: italic;
+		}
+		
+		.link-container {
+			text-align: center;
+			float: right;
+		}
+		
+		.link-container a {
+			margin: 0 auto;
+			color: black;
+			font-size: 1.25rem;
+			font-weight: bold;
+		}
+		
+		.link-container a:hover {
+			color: #bbc0ff;
+		}
+    </style>
+	
+	<script src="js/insdata.js"></script>
+</head>
+
+<body>
+	<div class="main_form">
+		<h2>Contact Form - Health Insurance</h2>
+		<div class="link-container">
+			<a href="insmenu.html">Exit</a>
+		</div>
+		<label for="fullName" class="i_label">Full Name</label>
+		<input type="text" id="firstName" class="name_input" placeholder="first name">
+		<input type="text" id="midName" class="name_input" placeholder="middle name (optional)">
+		<input type="text" id="lastName" class="name_input" placeholder="last name">
+
+		<label for="dob" class="i_label">Date of Birth</label>
+		<input type="date" id="dob">
+
+		<label for="phone" class="i_label">Phone</label>
+		<input type="tel" id="phone" placeholder="phone">
+
+		<label for="email" class="i_label">Email</label>
+		<input type="email" id="email" placeholder="email">
+
+		<label for="address" class="i_label">Address</label>
+		<input type="text" id="address" placeholder="street address">
+
+		<label for="address2" class="i_label">Address Line 2</label>
+		<input type="text" id="address2" placeholder="address line 2 (optional)">
+
+		<label for="city" class="i_label">City</label>
+		<input type="text" id="city" placeholder="city">
+
+		<label for="state" class="i_label">State</label>
+		<input type="text" id="state" placeholder="state (RI, MA, etc)">
+
+		<label for="zip" class="i_label">Zip Code</label>
+		<input type="text" id="zip" placeholder="zip">
+		
+		<p class="i_label">Are you married?</p>
+		<input type="radio" id="married1" class="r_label" name="married" value="yes" onclick="toggleSpouse(this)">
+		<label for="married1">Yes</label><br>
+		<input type="radio" id="married2" class="r_label" name="married" value="no" onclick="toggleSpouse(this)">
+		<label for="married2">No</label><br>
+		
+		<div id="spouseFields" style="display: none;">
+			<label for="spouseFull" class="i_label">Spouse's Full Name</label>
+			<input type="text" id="spouseFirst" class="name_input" placeholder="first name">
+			<input type="text" id="spouseMid" class="name_input" placeholder="middle name (optional)">
+			<input type="text" id="spouseLast" class="name_input" placeholder="last name">
+
+			<label for="spouseDob" class="i_label">Spouse's Date of Birth</label>
+			<input type="date" id="spouseDob">
+		</div>
+		
+		<p class="i_label">When do you plan on retiring?</p>
+		<input type="radio" id="plan1" class="r_label" name="plan" value="plan1">
+		<label for="plan1">Within a year</label><br>
+		<input type="radio" id="plan2" class="r_label" name="plan" value="plan2">
+		<label for="plan2">1-2 years</label><br>
+		<input type="radio" id="plan3" class="r_label" name="plan" value="plan3">
+		<label for="plan3">3-5 years</label><br>
+		<input type="radio" id="plan4" class="r_label" name="plan" value="plan4">
+		<label for="plan4">More than 5 years</label><br>
+		<input type="radio" id="plan5" class="r_label" name="plan" value="plan5">
+		<label for="plan5">Not sure</label><br>
+		
+		<p class="i_label">Current health insurance</p>
+		<input type="radio" id="currins1" class="r_label" name="currins" value="currins1">
+		<label for="currins1">Medicare</label><br>
+		<input type="radio" id="currins2" class="r_label" name="currins" value="currins2">
+		<label for="currins2">Employer Health Plan</label><br>
+		<input type="radio" id="currins3" class="r_label" name="currins" value="currins3">
+		<label for="currins3">Individual Health Plan</label><br>
+		<input type="radio" id="currins4" class="r_label" name="currins" value="currins4">
+		<label for="currins4">None</label><br>
+		
+		<p class="i_label">Best days to call</p>
+		<input type="checkbox" id="day1" class="r_label" name="day" value="monday">
+		<label for="day1">Monday</label><br>
+		<input type="checkbox" id="day2" class="r_label" name="day" value="tuesday">
+		<label for="day2">Tuesday</label><br>
+		<input type="checkbox" id="day3" class="r_label" name="day" value="wednesday">
+		<label for="day3">Wednesday</label><br>
+		<input type="checkbox" id="day4" class="r_label" name="day" value="thursday">
+		<label for="day4">Thursday</label><br>
+		<input type="checkbox" id="day5" class="r_label" name="day" value="friday">
+		<label for="day5">Friday</label><br><br>
+		
+		<label for="zip" class="i_label">Additional comments</label>
+		<textarea rows="4" cols="50" id="commentform"></textarea>
+		
+		<p id="error_message"><br></p>
+		<button onClick="buttonSubmit()">Submit</button>
+	</div>
+	
+	<script>
+		function properName(name) {
+			return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+		}
+		
+		function isValidEmail(email) {
+			return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+		}
+		
+		function isValidPhoneNumber(input) {
+			return /^\d{10}$/.test(input);
+		}
+		
+		function isValidAddress(addr) {
+			return /^[a-zA-Z0-9\s]+$/.test(addr);
+		}
+		
+		function toggleSpouse(r) {
+			const form = document.getElementById('spouseFields');
+			
+			if(r.value == "yes") {
+				form.style.display = 'block';
+			} else {
+				form.style.display = 'none';
+			}
+		}
+
+		function buttonSubmit() {
+			let first_name = document.getElementById("firstName").value;
+			let middle_name = document.getElementById("midName").value;
+			let last_name = document.getElementById("lastName").value;
+			const dob = document.getElementById("dob").value;
+			const phone = document.getElementById("phone").value;
+			let email = document.getElementById("email").value;
+			let address = document.getElementById("address").value;
+			let address2 = document.getElementById("address2").value;
+			let city = document.getElementById("city").value;
+			let state = document.getElementById("state").value;
+			const zip = document.getElementById("zip").value;
+			
+			let spouse_first = document.getElementById("spouseFirst").value;
+			let spouse_middle = document.getElementById("spouseMid").value;
+			let spouse_last = document.getElementById("spouseLast").value;
+			const spouse_dob = document.getElementById("spouseDob").value;
+			
+			const married = document.getElementsByName("married");
+			const plan = document.getElementsByName("plan");
+			let plan_val = null;
+			const currins = document.getElementsByName("currins");
+			let curr_val = null;
+			const day = document.getElementsByName("day");
+			
+			const comments = document.getElementById("commentform").value;
+			
+			let error_field = document.getElementById("error_message");
+			
+			let marriage_checked = false;
+			let is_married = false;
+			
+			for (const radio of married) {
+				if (radio.checked) {
+					marriage_checked = true;
+					if(radio.value == "yes") {
+						is_married = true;
+					}
+					break;
+				}
+			}
+			
+			let plan_checked = false;
+			
+			for (const radio of plan) {
+				if (radio.checked) {
+					plan_checked = true;
+					plan_val = radio.value;
+					break;
+				}
+			}
+			
+			let curr_checked = false;
+			
+			for (const radio of currins) {
+				if (radio.checked) {
+					curr_checked = true;
+					curr_val = radio.value;
+					break;
+				}
+			}
+			
+			let days_checked = [];
+			let is_days = false;
+			
+			for (const radio of day) {
+				if (radio.checked) {
+					days_checked.push(1);
+					is_days = true;
+				} else {
+					days_checked.push(0);
+				}
+			}
+			
+			if(first_name.length === 0) {
+				error_field.textContent = "Please enter your first name";
+			} else if(!first_name.match(/^[A-Za-z]+$/)) {
+				error_field.textContent = "Please enter a valid first name";
+			} else if(last_name.length === 0) {
+				error_field.textContent = "Please enter your last name";
+			} else if(!last_name.match(/^[A-Za-z]+$/)) {
+				error_field.textContent = "Please enter a valid last name";
+			} else if(middle_name.length > 0 && !middle_name.match(/^[A-Za-z]+$/)) {
+				error_field.textContent = "Please enter a valid middle name";
+			} else if(dob.length == 0) {
+				error_field.textContent = "Please enter a date of birth";
+			} else if(phone.length == 0 || !isValidPhoneNumber(phone)) {
+				error_field.textContent = "Please enter a valid phone number";
+			} else if(!isValidEmail(email)) {
+				error_field.textContent = "Please enter a valid email";
+			} else if(address.length == 0 || !isValidAddress(address)) {
+				error_field.textContent = "Please enter a valid address";
+			} else if(address2.length > 0 && !isValidAddress(address2)) {
+				error_field.textContent = "Please enter a valid second line address";
+			} else if(city.length == 0) {
+				error_field.textContent = "Please enter the city you live in";
+			} else if(state.length == 0) {
+				error_field.textContent = "Please enter the state you live in";
+			} else if(state.length != 2) {
+				error_field.textContent = "Please enter the two letter state abbreviation";
+			} else if(zip.length == 0) {
+				error_field.textContent = "Please enter your zip code";
+			} else if(zip.length != 5) {
+				error_field.textContent = "Please enter a 5 digit zip code";
+			} else if(!marriage_checked) {
+				error_field.textContent = "Please enter your marital status";
+			} else if(is_married && (spouse_first.length == 0 || spouse_last.length == 0)) {
+				error_field.textContent = "Please enter your spouse's first and last name";
+			} else if(is_married && (spouse_middle.length > 0 && !spouse_middle.match(/^[A-Za-z]+$/))) {
+				error_field.textContent = "Please enter a valid middle name for your spouse";
+			} else if(is_married && (spouse_dob.length == 0)) {
+				error_field.textContent = "Please enter your spouse's date of birth";
+			} else if(!plan_checked) {
+				error_field.textContent = "Please select when you plan to retire";
+			} else if(!curr_checked) {
+				error_field.textContent = "Please select your current health insurance status";
+			} else if(!is_days) {
+				error_field.textContent = "Please select at least 1 day that you are available";
+			} else {
+				first_name = properName(first_name);
+				last_name = properName(last_name);
+				
+				if(middle_name.length > 0) {
+					middle_name = properName(middle_name);
+				}
+				
+				email = email.toLowerCase();
+				address = properName(address);
+				address2 = properName(address2);
+				city = properName(city);
+				state = state.toUpperCase();
+				
+				if(spouse_first.length > 0) {
+					spouse_first = properName(spouse_first);
+				}
+				
+				if(spouse_middle.length > 0) {
+					spouse_middle = properName(spouse_middle);
+				}
+				
+				if(spouse_last.length > 0) {
+					spouse_last = properName(spouse_last);
+				}
+				
+				let p = new person();
+				p.setName(first_name,middle_name,last_name);
+				p.setDob(dob);
+				p.setPhone(phone);
+				p.setEmail(email);
+				p.setAddress(address);
+				p.setAddress2(address2);
+				p.setCity(city);
+				p.setState(state);
+				p.setZip(zip);
+				p.setMarried(is_married);
+				p.setSpouseName(spouse_first,spouse_middle,spouse_last);
+				p.setSpouseDob(spouse_dob);
+				p.setPlan(plan_val);
+				p.setCurrIns(curr_val);
+				p.setAvailable(days_checked);
+				p.setComments(comments);
+				
+				let ins_list = JSON.parse(localStorage.getItem('insurance'));
+				p.setId(ins_list.length);
+				ins_list.push(p);
+				localStorage.setItem('insurance', JSON.stringify(ins_list));
+				
+				window.location.href = "insthank.html";
+			}
+		}
+		
+		function generateForm() {
+			let p_example = new db_person(createPerson());
+			document.getElementById("firstName").value = p_example.first_name;
+			document.getElementById("midName").value = p_example.middle_name;
+			document.getElementById("lastName").value = p_example.last_name;
+			document.getElementById("dob").value = p_example.dob;
+			document.getElementById("phone").value = p_example.phone;
+			document.getElementById("email").value = p_example.email;
+			document.getElementById("address").value = p_example.address;
+			document.getElementById("address2").value = p_example.address2;
+			document.getElementById("city").value = p_example.city;
+			document.getElementById("state").value = p_example.state;
+			document.getElementById("zip").value = p_example.zip;
+			
+			let married = document.getElementsByName("married");
+			if(p_example.is_married) {
+				document.getElementById("spouseFirst").value = p_example.spouse_first;
+				document.getElementById("spouseMid").value = p_example.spouse_middle;
+				document.getElementById("spouseLast").value = p_example.spouse_last;
+				document.getElementById("spouseDob").value = p_example.spouse_dob;
+				married[0].checked = true;
+				toggleSpouse(married[0]);
+			} else {
+				document.getElementById("spouseFirst").value = "";
+				document.getElementById("spouseMid").value = "";
+				document.getElementById("spouseLast").value = "";
+				document.getElementById("spouseDob").value = "";
+				married[1].checked = true;
+				toggleSpouse(married[1]);
+			}
+			
+			let plan = document.getElementsByName("plan");
+			plan[p_example.plan].checked = true;
+			let currins = document.getElementsByName("currins");
+			currins[p_example.currins].checked = true;
+			let day = document.getElementsByName("day");
+			for(let i = 0; i < p_example.available.length; i++) {
+				if(p_example.available[i]) { day[i].checked = true; } else { day[i].checked = false; }
+			}
+			
+			document.getElementById("commentform").value = p_example.comments;
+		}
+		
+		generateForm();
+	</script>
+</body>
+</html>

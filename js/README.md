@@ -1,1 +1,1 @@
-JavaScript files shared by HTML files
+JavaScript files used by HTML files

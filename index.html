@@ -7,70 +7,78 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-			margin: 0;
 			background: #bbc0ff;
-			display: flex;
-			justify-content: center;
+			margin: 0;
+			padding: 0;
         }
 		
-		.link_list {
+		.screen {
 			width: 60%;
+			margin: 0 auto;
 			min-height: 100vh;
+			text-align: center;
+		}
+		
+		.list_title {
+			color: black;
+			font-size: 4.2vw;
+			padding: 20px 0;
+		}
+		
+		.link_list {
 			display: flex;
-			flex-direction: column;
+			flex-wrap: wrap;
+			justify-content: center;
+			padding: 10px 0;
 		}
 		
 		a {
-			flex: 1;
 			display: flex;
-			justify-content: center;
 			align-items: center;
+			justify-content: center;
+			width: 45%;
+			height: 150px;
+			margin: 10px;
+			
 			font-size: 4.2vw;
-			color: black;
+			background-color: #333fc1;
 			text-decoration: none;
+			color: black;
+		}
+		
+		a:hover {
+			background-color: #2c36a6;
 		}
 		
 		@media only screen and (max-width: 620px) {
-			.link_list {
+			.screen {
 				width: 100%;
+			}
+			
+			.list_title {
+				font-size: 12vw;
 			}
 			
 			a {
 				font-size: 12vw;
+				width: 100%;
 			}
-		}
-		
-		.btn1 {
-			background-color: #333fc1;
-		}
-		
-		.btn1:hover {
-			background-color: #2c36a6;
-		}
-		
-		.btn2 {
-			background-color: #4e58c8;
-		}
-		
-		.btn2:hover {
-			background-color: #434ca9;
-		}
-		
-		.btn3 {
-			background-color: #377fca;
-		}
-		
-		.btn3:hover {
-			background-color: #347aa6;
 		}
     </style>
 </head>
 
 <body>
-	<div class="link_list">
-		<a class="btn1" href="login.html">Login</a>
-		<a class="btn2" href="lights.html">Lights</a>
-		<a class="btn3" href="insmenu.html">Insurance</a>
+	<div class="screen">
+		<div class="list_title">Web Apps:</div>
+		<div class="link_list">
+			<a href="login.html">Login</a>
+			<a href="insmenu.html">Insurance</a>
+		</div>
+		<div class="list_title">Games:</div>
+		<div class="link_list">
+			<a href="lights.html">Lights</a>
+			<a href="quiz.html">Quiz</a>
+		</div>
 	</div>
 </body>
 </html>

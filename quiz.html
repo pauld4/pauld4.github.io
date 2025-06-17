@@ -1,0 +1,332 @@
+<!--
+	https://pauld4.github.io/
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<title>Quiz - PaulD4</title>
+	<style>
+        body {
+            font-family: Times New Roman, Arial, sans-serif;
+			background-color: #bbc0ff;
+			min-height: 100vh;
+			display: flex;
+        }
+		
+		.btn-menu {
+			width: 400px;
+			margin: auto;
+			padding: 20px;
+			text-align: center;
+        }
+		
+		.button-submit button:disabled {
+			color: grey;
+			cursor: default;
+		}
+		
+		.screen {
+			display: none;
+			margin: auto;
+			width: 80%;
+			text-align: center;
+		}
+		
+		.screen img {
+			max-height: 400px;
+			max-width: 400px;
+		}
+		
+		.button-container button, .button-submit button, .modal-content button, .btn-menu button {
+			color: black;
+			font-size: 1.1em;
+			padding: 20px;
+			border: none;
+			cursor: pointer;
+			margin: 10px;
+			background: #eef4ff;
+		}
+		
+		.button-container button {
+			width:20%;
+		}
+		
+		@media only screen and (max-width: 620px) {
+			.button-container button {
+				width: 100%;
+			}
+			
+			.screen img {
+				width: 100%;
+			}
+		}
+		
+		.modal {
+			display: none;
+			position: fixed;
+			z-index: 999;
+			left: 0; top: 0;
+			width: 100%; height: 100%;
+			background-color: rgba(0,0,0,0.5);
+		}
+
+		.modal-content {
+			background-color: #bbc0ff;
+			font-size: 1.1em;
+			margin: 15% auto;
+			padding: 20px;
+			width: 300px;
+			text-align: center;
+		}
+
+		.close {
+			float: right;
+			font-size: 20px;
+			cursor: pointer;
+		}
+    </style>
+</head>
+
+<body>
+	<div id="q_screen" class="screen">
+		<img id="q_img" src="">
+		
+		<div class="button-container">
+			<button id="btn0" onclick="doGuess(0)">Button 1</button>
+			<button id="btn1" onclick="doGuess(1)">Button 2</button>
+			<br>
+			<button id="btn2" onclick="doGuess(2)">Button 3</button>
+			<button id="btn3" onclick="doGuess(3)">Button 4</button>
+		</div>
+		
+		<div class="button-submit">
+			<button id="btn_submit" onclick="submitGuess()">Submit</button>
+		</div>
+		
+		<div class="button-submit">
+			<button onclick="confirmExit()">Return to Menu</button>
+		</div>
+	</div>
+	
+	<div id="menu" class="btn-menu">
+		<div>
+			<h2>Italian Animal Quiz</h2>
+		</div>
+		<div>
+			<button onclick="startQuiz()">Start</button>
+			<button onclick="exitQuiz()">Exit</button>
+		</div>
+	</div>
+	
+	<div id="customAlert" class="modal">
+		<div id="modalEle" class="modal-content">
+		</div>
+	</div>
+	
+	<script>
+		const base_dir = "images";
+		const q1 = {img: "image22.webp", name: "Tralalero Tralala"}
+		const q2 = {img: "image8.webp", name: "Shimpanzini Bananini"}
+		const q3 = {img: "image10.webp", name: "Brr Brr Patapim"}
+		const q4 = {img: "image14.webp", name: "Lirili Larila"}
+		const q5 = {img: "image18.webp", name: "Tung Tung Tung Sahur"}
+		const arr = [q1,q2,q3,q4,q5]; // list of questions
+		for(let i = 0; i < arr.length; i++) {
+			arr[i].id = i; // assign id to each question
+		}
+		let arr_order = []; // the order that the questions will be displayed
+		let user_score = 0; // user's score, points_per variable is added to this variable for each correct answer
+		let answer = 0; // holds the id of the question as the current answer
+		let answer_pos = 0; // the button that is the correct answer
+		let btn_names = []; // the text that is displayed on each button
+		let selected_guess = 0; // the button that the user clicked on for a guess. is checked with answer_pos to verify if the user is correct or not
+		let current_guess = 0; // the current question that the user is on. increments after each guess
+		let points_per = 100 / arr.length; // generates points per question. 5 questions means 20 points per question
+		
+		function loadMenu() {
+			document.getElementById("customAlert").style.display = "none";
+			document.getElementById("q_screen").style.display = "none";
+			document.getElementById("menu").style.display = "block";
+		}
+		
+		function startQuiz() {
+			arr_order = arr.slice();
+			shuffleArray(arr_order);
+			user_score = 0;
+			answer = 0;
+			answer_pos = 0;
+			btn_names = [];
+			selected_guess = 0;
+			current_guess = 0;
+			generateQuestion();
+			
+			for(let i = 0; i < 4; i++) {
+				let s = "btn" + i;
+				document.getElementById(s).style.border = "none";
+			}
+			document.getElementById("btn_submit").disabled = true;
+			document.getElementById("menu").style.display = "none";
+			document.getElementById("q_screen").style.display = "block";
+		}
+		
+		function exitQuiz() {
+			window.location.href = "index.html";
+		}
+		
+		function generateQuestion() {
+			answer = arr_order[current_guess].id;
+			btn_names = [];
+			answer_pos = Math.floor(Math.random() * 4);
+			
+			document.getElementById("q_img").src = base_dir + "/" + arr_order[current_guess].img;
+			
+			let num = 0;
+			while(num < 4) {
+				let s = "btn" + num;
+				
+				if(num != answer_pos) {
+					let is_added = false;
+					let r = 0;
+					do {
+						r = Math.floor(Math.random() * arr.length);
+					} while (r == answer);
+					
+					if(btn_names.length > 0) {
+						for(let i of btn_names) {
+							if(i == r) {
+								is_added = true;
+							}
+						}
+					}
+					
+					if(!is_added) {
+						btn_names[num] = r;
+						document.getElementById(s).textContent = arr[r].name;
+						num++;
+					}
+				} else {
+					btn_names[num] = answer;
+					document.getElementById(s).textContent = arr[answer].name;
+					num++;
+				}
+			}
+		}
+		
+		function doGuess(n) {
+			for(let i = 0; i < 4; i++) {
+				let s = "btn" + i;
+				if(i == n) {
+					document.getElementById(s).style.border = "3px solid black";
+				} else {
+					document.getElementById(s).style.border = "none";
+				}
+			}
+			document.getElementById("btn_submit").disabled = false;
+			selected_guess = n;
+		}
+		
+		function submitGuess() {
+			let display_element = document.getElementById("modalEle");
+			let p_element = null;
+			let button_element = null;
+			display_element.innerHTML = "";
+			
+			p_element = document.createElement("p");
+			let s = "";
+			if(selected_guess == answer_pos) {
+				s += "Correct!";
+				user_score += points_per;
+			} else {
+				s += "Wrong!";
+			}
+			s += " ";
+			s += "That is " + arr[answer].name + "!";
+			p_element.innerText = s;
+			display_element.appendChild(p_element);
+			
+			p_element = document.createElement("p");
+			p_element.innerText = "Your score is " + user_score + ".";
+			display_element.appendChild(p_element);
+			
+			button_element = document.createElement("button");
+			button_element.innerText = "Next Question";
+			button_element.onclick = () => nextQuestion();
+			display_element.appendChild(button_element);
+			
+			document.getElementById("customAlert").style.display = "block";
+		}
+		
+		function nextQuestion() {
+			current_guess++;
+			if(current_guess < arr.length) {
+				generateQuestion();
+				let s = "btn" + selected_guess;
+				document.getElementById(s).style.border = "none";
+				
+				document.getElementById("btn_submit").disabled = true;
+				closeAlert();
+			} else {
+				displayResults();
+			}
+		}
+		
+		function shuffleArray(a) {
+			for(let i = 0; i < a.length; i++) {
+				let r = Math.floor(Math.random() * a.length);
+				let temp = a[r];
+				a[r] = a[i];
+				a[i] = temp;
+			}
+		}
+		
+		function confirmExit() {
+			let display_element = document.getElementById("modalEle");
+			let p_element = null;
+			let button_element = null;
+			display_element.innerHTML = "";
+			
+			p_element = document.createElement("p");
+			p_element.innerText = "Return to menu?";
+			display_element.appendChild(p_element);
+			
+			button_element = document.createElement("button");
+			button_element.innerText = "Yes";
+			button_element.onclick = () => loadMenu();
+			display_element.appendChild(button_element);
+			
+			button_element = document.createElement("button");
+			button_element.innerText = "No";
+			button_element.onclick = () => closeAlert();
+			display_element.appendChild(button_element);
+			
+			document.getElementById("customAlert").style.display = "block";
+		}
+		
+		function displayResults() {
+			let display_element = document.getElementById("modalEle");
+			let p_element = null;
+			let button_element = null;
+			display_element.innerHTML = "";
+			
+			p_element = document.createElement("p");
+			p_element.innerText = "Your score is " + user_score + "/100!";
+			display_element.appendChild(p_element);
+			
+			button_element = document.createElement("button");
+			button_element.innerText = "Return to Menu";
+			button_element.onclick = () => loadMenu();
+			display_element.appendChild(button_element);
+			
+			document.getElementById("customAlert").style.display = "block";
+		}
+
+		function closeAlert() {
+			document.getElementById("customAlert").style.display = "none";
+		}
+	</script>
+</body>
+</html>

@@ -12,9 +12,10 @@
 	<style>
         body {
             font-family: Times New Roman, Arial, sans-serif;
-			background-color: #bbc0ff;
+			background-color: #f5f78f;
 			min-height: 100vh;
 			display: flex;
+			margin: 0;
         }
 		
 		.btn-menu {
@@ -35,7 +36,7 @@
 		
 		.screen {
 			display: none;
-			margin: auto;
+			margin: 8px auto;
 			width: 80%;
 			text-align: center;
 		}
@@ -52,7 +53,8 @@
 			border: none;
 			cursor: pointer;
 			margin: 10px;
-			background: #eef4ff;
+			background: #fbfcd9;
+			box-shadow: 0 0 10px rgba(0,0,0,0.5);
 		}
 		
 		.button-container button {
@@ -83,7 +85,7 @@
 		}
 
 		.modal-content {
-			background-color: #bbc0ff;
+			background-color: #f5f78f;
 			font-size: 1.1em;
 			margin: 15% auto;
 			padding: 20px;
@@ -95,6 +97,10 @@
 			float: right;
 			font-size: 20px;
 			cursor: pointer;
+		}
+		
+		button:hover {
+			background-color: #f0f0f0;
 		}
     </style>
 </head>
@@ -275,6 +281,12 @@
 				
 				document.getElementById("btn_submit").disabled = true;
 				closeAlert();
+				
+				<!-- window.scrollTo({ -->
+					<!-- top: 0, -->
+					<!-- behavior: 'smooth' -->
+				<!-- }); -->
+				window.scroll(0, 0);
 			} else {
 				displayResults();
 			}

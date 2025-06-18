@@ -9,14 +9,14 @@
 	<style>
 		body {
 			font-family: Times New Roman, Arial, sans-serif;
-			background: #bbc0ff;
+			background: #f5f78f;
 			margin: 0;
 			padding: 20px;
 		}
 		
 		.main_form {
-			background: #eef4ff;
-			box-shadow: 0 0 10px rgba(0,0,0,0.1);
+			background: #fbfcd9;
+			box-shadow: 0 0 10px rgba(0,0,0,0.5);
 			padding: 20px;
 		}
 		
@@ -51,7 +51,7 @@
 			top: 0;
 			padding: 8px;
 			white-space: nowrap;
-			background: #eef4ff;
+			background: #fbfcd9;
 			z-index: 2; /* makes sure headers are above other content */
 		}
 		
@@ -69,7 +69,7 @@
 		}
 		
 		.link-container a:hover {
-			color: #bbc0ff;
+			color: #a0a0a0;
 		}
 	</style>
 	
@@ -91,9 +91,9 @@
 	
 	<script>
 		let ins1 = JSON.parse(localStorage.getItem('insurance'));
-		var table_element = document.getElementById("user_list");
-		var tr_element = null;
-		var td_element = null;
+		let table_element = document.getElementById("user_list");
+		let tr_element = null;
+		let td_element = null;
 		
 		for(let i of ins1) {
 			let p = new db_person(i);

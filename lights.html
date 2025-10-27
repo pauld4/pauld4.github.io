@@ -160,22 +160,20 @@
 			// Draw the images on the screen
             function draw() {
 				ctx.clearRect(0, 0, canvas.width, canvas.height);
-				ctx.fillStyle = '#f5f78f';
-				ctx.fillRect(0, 0, canvas.width, canvas.height);
 				
 				for(let row = 0; row < g.size; row++) {
 					for(let col = 0; col < g.size; col++) {
 						let l = g.getLight(col,row);
 						let relx = g.posx + l.posx;
 						let rely = g.posy + l.posy;
-						l.status ? ctx.fillStyle = 'white' : ctx.fillStyle = 'orange';
+						l.status ? ctx.fillStyle = '#f5f78f' : ctx.fillStyle = 'orange';
 						ctx.fillRect(relx, rely, 64, 64);
 					}
 				}
 				
 				for(let button of buttons) {
 					ctx.beginPath();
-					ctx.fillStyle = button.hovered ? '#ccc' : '#fff';
+					ctx.fillStyle = button.hovered ? '#fbfcd9' : '#f5f78f';
 
 					ctx.fillRect(button.x, button.y, button.width, button.height);
 					ctx.closePath();

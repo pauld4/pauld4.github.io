@@ -7,7 +7,6 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-			background: #f5f78f;
 			margin: 0;
 			padding: 0;
         }
@@ -32,22 +31,15 @@
 			padding: 10px 0;
 		}
 		
-		a {
+		.link_list a img {
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			width: 45%;
-			height: 150px;
 			margin: 10px;
+			width: 400px;
+			height: 300px;
 			box-shadow: 0 0 10px rgba(0,0,0,0.5);
-			font-size: 4.2vw;
-			background-color: #fbfcd9;
-			text-decoration: none;
-			color: black;
-		}
-		
-		a:hover {
-			background-color: #f0f0f0;
+			opacity: 0.5;
 		}
 		
 		@media only screen and (max-width: 620px) {
@@ -64,20 +56,34 @@
 				width: 100%;
 			}
 		}
+		
+		.container {
+			position: relative;
+			text-align: center;
+			color: white;
+		}
+		
+		.centered {
+			position: absolute;
+			font-size: 4vw;
+			color: black;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
     </style>
 </head>
 
 <body>
 	<div class="screen">
-		<div class="list_title">Web Apps:</div>
 		<div class="link_list">
-			<a href="login.html">Login</a>
-			<a href="insmenu.html">Insurance</a>
+			<div class="container"><a href="login.html"><img src="login.png"><div class="centered">Login Form</div></a></div>
+			<div class="container"><a href="insmenu.html"><img src="inschart2.png"><div class="centered">Insurance Form</div></a></div>
 		</div>
-		<div class="list_title">Games:</div>
+		
 		<div class="link_list">
-			<a href="lights.html">Lights</a>
-			<a href="quiz.html">Quiz</a>
+			<div class="container"><a href="lights.html"><img src="lightimg.png"><div class="centered">Lights</div></a></div>
+			<div class="container"><a href="quiz.html"><img src="qzimg.png"><div class="centered">Animal Test</div></a></div>
 		</div>
 	</div>
 </body>

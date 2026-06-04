@@ -13,6 +13,3 @@ A JavaScript game using the HTML canvas and continually draws a new image to the
 
 Insmenu.html, Insform.html, Insdb.html, Insthank.html >>
 Sample lead generation pages for health insurance brokers where users can input data using insform.html and view the current "user" information using insdb.html. After submitting a form, the user is sent to insthank.html showing a "thank you" message and a link back to the main menu, insmenu.html. Future improvements include ensuring incorrect birth dates are not used (dates such as February 30th), and that cities, states, and zip codes match (incorrect locations such as New York City, MA 12345). When loading any of these pages, 50 random users are generated that are stored in the "database", or localstorage.
-
-Quiz.html >>
-A JavaScript game that tests user's knowledge of various Italian animals. This version includes 5 animals to guess, and then displaying the user's score once they finish.
